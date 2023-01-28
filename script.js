@@ -8,7 +8,10 @@ const game = () => {
             x: square.dataset.x,
             y: square.dataset.y
         };
-        if (gameStatus[position.y][position.x] === null) {
+
+        const isEmpty = gameStatus[position.y][position.x] === null
+
+        if (isEmpty) {
             gameStatus[position.y][position.x] = 'X'
             aiPlay()
         }
@@ -23,7 +26,9 @@ const game = () => {
             }
         };
 
-        if (gameStatus[position.dataset.y][position.dataset.x] === null) {
+        const isEmpty = gameStatus[position.dataset.y][position.dataset.x] === null
+
+        if (isEmpty) {
             gameStatus[position.dataset.y][position.dataset.x] = 'O'
             checkStatus(position)
         } else {
