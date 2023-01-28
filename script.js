@@ -8,7 +8,10 @@ const game = () => {
             x: square.dataset.x,
             y: square.dataset.y
         };
-        gameStatus[position.y][position.x] = gameStatus[position.y][position.x]  === null ? 'X' : 0;
+        if (gameStatus[position.y][position.x] === null) {
+            gameStatus[position.y][position.x] = 'X'
+            aiPlay()
+        }
     } ;
     
     const aiPlay = () => {
@@ -17,12 +20,15 @@ const game = () => {
             x: getRandomIndex(3),
             y: getRandomIndex(3)
         };
-        gameStatus[position.y][position.x] =  gameStatus[position.y][position.x]  === null ? 'O' : aiPlay();
+        if (gameStatus[position.y][position.x] === null) {
+            gameStatus[position.y][position.x] = 'O'
+        } else {
+            aiPlay()
+        }
     }
     
     const play = (square) => {
         setPosition(square)
-        aiPlay()
         console.log(gameStatus)
     }
 
@@ -30,7 +36,6 @@ const game = () => {
 
     return { clearPosition, play }
 }
-
 let currentGame = game()
 
 const DOMEvents = () => {
