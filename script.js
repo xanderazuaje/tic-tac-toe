@@ -1,6 +1,7 @@
 const make2DArrayOf = (number1,number2)=>{ return new Array(number1).fill(null).map(()=>new Array(number2).fill(null)) }
 
 let gameStatus = make2DArrayOf(3,3)
+let gameEnded = false
 
 const game = () => {
     const setPosition = (square) => {
@@ -48,8 +49,10 @@ const game = () => {
 
             if( youWonByRow ){
                 console.log('You won')
+                gameEnded = true
             } else if( youLostByRow ){
                 console.log('You lost')
+                gameEnded = true
             }
         }
 
@@ -59,8 +62,10 @@ const game = () => {
 
             if( youWonByColumn ){
                 console.log('You won')
+                gameEnded = true
             } else if( youLostByColumn ){
                 console.log('You lost')
+                gameEnded = true
             }
         }
         
@@ -73,8 +78,10 @@ const game = () => {
             
             if (youWon){
                 console.log('You won')
+                gameEnded = true
             } else if (youLost){
                 console.log('You lost')
+                gameEnded = true
             }
         }
 
@@ -84,12 +91,17 @@ const game = () => {
     }
     
     const play = (square) => {
-        setPosition(square)
-        checkStatus(square)
-        console.log(gameStatus)
+        if (gameEnded === false) {   
+            setPosition(square)
+            checkStatus(square)
+            console.log(gameStatus)
+        }
     }
 
-    const clearPosition = () => gameStatus = make2DArrayOf(3,3);
+    const clearPosition = () => {
+        gameStatus = make2DArrayOf(3,3)
+        gameEnded = true
+    };
 
     return { clearPosition, play }
 }
