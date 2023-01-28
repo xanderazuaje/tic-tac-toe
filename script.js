@@ -63,9 +63,24 @@ const game = () => {
                 console.log('You lost')
             }
         }
+        
+        const checkDiagonal = () => {
+            const diagonal = [gameStatus[0][0], gameStatus[1][1], gameStatus[2][2]]
+            const diagonalReverse = [gameStatus[0][2], gameStatus[1][1], gameStatus[2][0]]
+            
+            const youWon = diagonal.every((square) => { return square === 'X'}) || diagonalReverse.every((square) => { return square === 'X'})
+            const youLost = diagonal.every((square) => { return square === 'O'}) || diagonalReverse.every((square) => { return square === 'O'})
+            
+            if (youWon){
+                console.log('You won')
+            } else if (youLost){
+                console.log('You lost')
+            }
+        }
 
         checkRow()
         checkColumn()
+        checkDiagonal()
     }
     
     const play = (square) => {
