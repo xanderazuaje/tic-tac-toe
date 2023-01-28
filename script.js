@@ -30,13 +30,13 @@ const game = () => {
 
     return { clearPosition, play }
 }
+
 let currentGame = game()
 
-let play = {
-    dataset:{
-        x: 0,
-        y: 0
-    }
+const DOMEvents = () => {
+    const squares = Array.from(document.querySelectorAll('.square'))
+    squares.forEach(square => square.addEventListener('click', (e)=>{
+        currentGame.play(e.target)
+    }))
 }
-
-currentGame.play(play)
+DOMEvents()
