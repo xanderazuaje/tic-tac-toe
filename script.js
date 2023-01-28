@@ -48,7 +48,19 @@ const game = () => {
             }
         }
 
+        const checkColumn = () => {
+            const youWonByColumn = gameStatus.every((row) => {return row[position.x] === 'X'})
+            const youLostByColumn = gameStatus.every((row) => {return row[position.x] === 'O'})
+
+            if( youWonByColumn ){
+                console.log('You won')
+            } else if( youLostByColumn ){
+                console.log('You lost')
+            }
+        }
+
         checkRow()
+        checkColumn()
     }
     
     const play = (square) => {
