@@ -5,6 +5,7 @@ let gameEnded = false
 
 const game = () => {
     const setPosition = (square) => {
+
         const position = {
             x: square.dataset.x,
             y: square.dataset.y
@@ -14,7 +15,10 @@ const game = () => {
 
         if (isEmpty) {
             gameStatus[position.y][position.x] = 'X'
-            aiPlay()
+            checkStatus(square)
+            if(gameEnded === false){
+                aiPlay()
+            }
         }
     } ;
     
@@ -85,22 +89,32 @@ const game = () => {
             }
         }
 
+        const checkDraw = () => {
+            const plays = gameStatus.flat()
+            const isBlocked = plays.every(square => square !== null)
+
+            if (isBlocked && gameEnded === false) {
+                console.log("It's a draw")
+                gameEnded = true
+            }
+        }
+
+        checkDraw()
         checkRow()
         checkColumn()
         checkDiagonal()
     }
     
     const play = (square) => {
-        if (gameEnded === false) {   
+        if (gameEnded === false) {
             setPosition(square)
-            checkStatus(square)
             console.log(gameStatus)
         }
     }
 
     const clearPosition = () => {
         gameStatus = make2DArrayOf(3,3)
-        gameEnded = true
+        gameEnded = false
     };
 
     return { clearPosition, play }
