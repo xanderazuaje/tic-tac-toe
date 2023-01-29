@@ -62,6 +62,9 @@ const game = () => {
     }
 
     const checkStatus = (square) => {
+
+        if (gameEnded === true) {return}
+
         const position = {
             x: square.dataset.x,
             y: square.dataset.y
@@ -111,18 +114,18 @@ const game = () => {
         
         const checkDraw = () => {
             const plays = gameStatus.flat()
-            const isBlocked = plays.every(square => square !== null)
+            const isBlocked = plays.every(square => square !== null) && gameEnded === false
             
-            if (isBlocked && gameEnded === false) {
+            if (isBlocked) {
                 resultMessage('Its a Draw!')
                 gameEnded = true
             }
         }
 
-        checkDraw()
         checkRow()
         checkColumn()
         checkDiagonal()
+        checkDraw()
     }
 
     const clearPosition = () => {
