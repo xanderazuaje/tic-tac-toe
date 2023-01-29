@@ -23,3 +23,16 @@ main > .square{
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
 }
+button{
+    margin: auto;
+    display: block;
+    margin-top: 20px;
+    background-color: cadetblue;
+    border: 1px antiquewhite solid;
+    border-radius: 5px;
+    padding: 5px 10px;
+    color: antiquewhite;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+}
