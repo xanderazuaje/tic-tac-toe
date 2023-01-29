@@ -3,10 +3,18 @@ const make2DArrayOf = (number1,number2)=>{ return new Array(number1).fill(null).
 let gameStatus = make2DArrayOf(3,3)
 let gameEnded = false
 
+const resultMessage = (text) => {
+    const p = document.createElement('p')
+    p.textContent = text
+    p.id = 'resultMsg'
+    document.body.append(p)
+}
+
 const squaresUI = document.querySelectorAll('.square')
 
 const game = () => {
     const play = (square) => {
+        checkStatus(square)
 
         const position = {
             x: square.dataset.x,
@@ -64,23 +72,23 @@ const game = () => {
             const youLostByRow =  gameStatus[position.y].every((square) => { return square === 'O'}) 
 
             if( youWonByRow ){
-                console.log('You won')
+                resultMessage('You Won!')
                 gameEnded = true
             } else if( youLostByRow ){
-                console.log('You lost')
+                resultMessage('You Lost!')
                 gameEnded = true
             }
         }
-
+        
         const checkColumn = () => {
             const youWonByColumn = gameStatus.every((row) => {return row[position.x] === 'X'})
             const youLostByColumn = gameStatus.every((row) => {return row[position.x] === 'O'})
-
+            
             if( youWonByColumn ){
-                console.log('You won')
+                resultMessage('You Won!')
                 gameEnded = true
             } else if( youLostByColumn ){
-                console.log('You lost')
+                resultMessage('You lost!')
                 gameEnded = true
             }
         }
@@ -93,20 +101,20 @@ const game = () => {
             const youLost = diagonal.every((square) => { return square === 'O'}) || diagonalReverse.every((square) => { return square === 'O'})
             
             if (youWon){
-                console.log('You won')
+                resultMessage('You Won!')
                 gameEnded = true
             } else if (youLost){
-                console.log('You lost')
+                resultMessage('You Lost!')
                 gameEnded = true
             }
         }
-
+        
         const checkDraw = () => {
             const plays = gameStatus.flat()
             const isBlocked = plays.every(square => square !== null)
-
+            
             if (isBlocked && gameEnded === false) {
-                console.log("It's a draw")
+                resultMessage('Its a Draw!')
                 gameEnded = true
             }
         }
@@ -118,9 +126,15 @@ const game = () => {
     }
 
     const clearPosition = () => {
+        const results = document.querySelector('#resultMsg')
+
         gameStatus = make2DArrayOf(3,3)
         gameEnded = false
         
+        if (results !== null) {
+            results.remove()
+        }
+
         squaresUI.forEach(square => square.innerHTML = '')
     };
 
