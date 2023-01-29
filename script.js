@@ -3,6 +3,8 @@ const make2DArrayOf = (number1,number2)=>{ return new Array(number1).fill(null).
 let gameStatus = make2DArrayOf(3,3)
 let gameEnded = false
 
+const squaresUI = document.querySelectorAll('.square')
+
 const game = () => {
     const play = (square) => {
 
@@ -118,6 +120,8 @@ const game = () => {
     const clearPosition = () => {
         gameStatus = make2DArrayOf(3,3)
         gameEnded = false
+        
+        squaresUI.forEach(square => square.innerHTML = '')
     };
 
     return { clearPosition, play }
@@ -125,12 +129,15 @@ const game = () => {
 let currentGame = game()
 
 const DOMEvents = () => {
-    const squares = Array.from(document.querySelectorAll('.square'))
     
-    squares.forEach(square => square.addEventListener('click', (e)=>{
+    squaresUI.forEach(square => square.addEventListener('click', (e)=>{
             currentGame.play(e.target)
     }))
+    const restartBtn = document.querySelector('button')
 
+    restartBtn.addEventListener('click', ()=>{
+        currentGame.clearPosition()
+    })
 }
 
 thisPlay = DOMEvents()
