@@ -4,7 +4,7 @@ let gameStatus = make2DArrayOf(3,3)
 let gameEnded = false
 
 const game = () => {
-    const setPosition = (square) => {
+    const play = (square) => {
 
         const position = {
             x: square.dataset.x,
@@ -13,9 +13,10 @@ const game = () => {
 
         const isEmpty = gameStatus[position.y][position.x] === null
 
-        if (isEmpty) {
+        if (isEmpty && gameEnded === false) {
             gameStatus[position.y][position.x] = 'X'
             checkStatus(square)
+            showPlay(square, 'X')
             if(gameEnded === false){
                 aiPlay()
             }
@@ -30,15 +31,24 @@ const game = () => {
                 y: getRandomIndex(3)
             }
         };
-
+        
+        const square = document.querySelector(`[data-x="${position.dataset.x}"][data-y="${position.dataset.y}"]`)
+        
         const isEmpty = gameStatus[position.dataset.y][position.dataset.x] === null
 
         if (isEmpty) {
             gameStatus[position.dataset.y][position.dataset.x] = 'O'
             checkStatus(position)
+            showPlay(square, 'O')
         } else {
             aiPlay()
         }
+    }
+
+    const showPlay = (square, player) => {
+        const play = document.createElement('p')
+        play.textContent = player
+        square.append(play)
     }
 
     const checkStatus = (square) => {
@@ -104,13 +114,6 @@ const game = () => {
         checkColumn()
         checkDiagonal()
     }
-    
-    const play = (square) => {
-        if (gameEnded === false) {
-            setPosition(square)
-            console.log(gameStatus)
-        }
-    }
 
     const clearPosition = () => {
         gameStatus = make2DArrayOf(3,3)
@@ -122,15 +125,12 @@ const game = () => {
 let currentGame = game()
 
 const DOMEvents = () => {
-    const addClickListener = () => { 
-        const squares = Array.from(document.querySelectorAll('.square'))
-        squares.forEach(square => square.addEventListener('click', (e)=>{
+    const squares = Array.from(document.querySelectorAll('.square'))
+    
+    squares.forEach(square => square.addEventListener('click', (e)=>{
             currentGame.play(e.target)
-        }))
-    }
+    }))
 
-    return {addClickListener}
 }
-thisPlay = DOMEvents()
 
-thisPlay.addClickListener()
+thisPlay = DOMEvents()
