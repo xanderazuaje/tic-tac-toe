@@ -101,6 +101,7 @@ const game = () => {
     };
 
     return { clearPosition, play }
+    }
 }
 let currentGame = game()
 
