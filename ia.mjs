@@ -10,13 +10,7 @@
 
 //escoja el resultado más beneficioso
 
-//evaluar partida
-
-const board = [
-    ['X', 'O', 'O'],
-    ['O', 'O', 'O'],
-    ['X', 'O', 'X']
-]
+export {evaluate}
 
 const evaluate = (boardStatus)=>{
     console.time()
@@ -97,16 +91,17 @@ const evaluate = (boardStatus)=>{
 
         const iaWon = rowEvaluation[1].some(row => row === true)
                 || columnEvaluation[1].some(column => column === true) 
-                || diagonalsEvaluation[1].some(diagonal => diagonal === true) 
+                || diagonalsEvaluation[1].some(diagonal => diagonal === true)
+
+        const draw = boardStatus.flat().every(square => square !== null) && gameEnded === false
         
         return playerWon ? 1 : 
-        iaWon ? -1 : 
-        0
+        iaWon ? -1 :
+        draw ? 0 :
+        undefined
     }
     
     console.timeEnd()
     return checkWinner()
     
 }
-
-console.log(evaluate(board))
