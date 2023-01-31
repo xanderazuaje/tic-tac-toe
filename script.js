@@ -1,4 +1,6 @@
-const make2DArrayOf = (number1,number2)=>{ return new Array(number1).fill(null).map(()=>new Array(number2).fill(null)) }
+import { evaluate } from "./ia.mjs"
+
+const make2DArrayOf = (number1,number2) => new Array(number1).fill(null).map(()=>new Array(number2).fill(null))
 
 let gameStatus = make2DArrayOf(3,3)
 let gameEnded = false
@@ -14,7 +16,7 @@ const squaresUI = document.querySelectorAll('.square')
 
 const game = () => {
     const play = (square) => {
-        checkStatus(square)
+        checkStatus()
 
         const position = {
             x: square.dataset.x,
@@ -25,7 +27,7 @@ const game = () => {
 
         if (isEmpty && gameEnded === false) {
             gameStatus[position.y][position.x] = 'X'
-            checkStatus(square)
+            checkStatus()
             showPlay(square, 'X')
             if(gameEnded === false){
                 aiPlay()
@@ -61,72 +63,29 @@ const game = () => {
         square.append(play)
     }
 
-    const checkStatus = (square) => {
+    const checkStatus = () => {
 
-        if (gameEnded === true) {return}
+        if (gameEnded === true) return
 
-        const position = {
-            x: square.dataset.x,
-            y: square.dataset.y
-        }
-
-        const checkRow = () => {
-            const youWonByRow = gameStatus[position.y].every((square) => { return square === 'X'})
-            const youLostByRow =  gameStatus[position.y].every((square) => { return square === 'O'}) 
-
-            if( youWonByRow ){
+        const result = evaluate(gameStatus)
+        
+        switch (result) {
+            case 1:
                 resultMessage('You Won!')
                 gameEnded = true
-            } else if( youLostByRow ){
+                break;
+            case -1:
                 resultMessage('You Lost!')
                 gameEnded = true
-            }
-        }
+                break;
+            case -0:
+                resultMessage('Draw!')
+                gameEnded = true
+                break;
         
-        const checkColumn = () => {
-            const youWonByColumn = gameStatus.every((row) => {return row[position.x] === 'X'})
-            const youLostByColumn = gameStatus.every((row) => {return row[position.x] === 'O'})
-            
-            if( youWonByColumn ){
-                resultMessage('You Won!')
-                gameEnded = true
-            } else if( youLostByColumn ){
-                resultMessage('You lost!')
-                gameEnded = true
-            }
+            default:
+                break;
         }
-        
-        const checkDiagonal = () => {
-            const diagonal = [gameStatus[0][0], gameStatus[1][1], gameStatus[2][2]]
-            const diagonalReverse = [gameStatus[0][2], gameStatus[1][1], gameStatus[2][0]]
-            
-            const youWon = diagonal.every((square) => { return square === 'X'}) || diagonalReverse.every((square) => { return square === 'X'})
-            const youLost = diagonal.every((square) => { return square === 'O'}) || diagonalReverse.every((square) => { return square === 'O'})
-            
-            if (youWon){
-                resultMessage('You Won!')
-                gameEnded = true
-            } else if (youLost){
-                resultMessage('You Lost!')
-                gameEnded = true
-            }
-        }
-        
-        const checkDraw = () => {
-            const plays = gameStatus.flat()
-            const isBlocked = plays.every(square => square !== null) && gameEnded === false
-            
-            if (isBlocked) {
-                resultMessage('Its a Draw!')
-                gameEnded = true
-            }
-        }
-
-        checkRow()
-        checkColumn()
-        checkDiagonal()
-        checkDraw()
-    }
 
     const clearPosition = () => {
         const results = document.querySelector('#resultMsg')
