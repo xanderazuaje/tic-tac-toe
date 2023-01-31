@@ -86,6 +86,7 @@ const game = () => {
             default:
                 break;
         }
+    }
 
     const clearPosition = () => {
         const results = document.querySelector('#resultMsg')
@@ -101,7 +102,6 @@ const game = () => {
     };
 
     return { clearPosition, play }
-    }
 }
 let currentGame = game()
 
@@ -117,4 +117,4 @@ const DOMEvents = () => {
     })
 }
 
-thisPlay = DOMEvents()
+const thisPlay = DOMEvents()
