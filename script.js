@@ -1,5 +1,7 @@
 import { evaluate } from "./ia.mjs"
 
+export {gameEnded}
+
 const make2DArrayOf = (number1,number2) => new Array(number1).fill(null).map(()=>new Array(number2).fill(null))
 
 let gameStatus = make2DArrayOf(3,3)
@@ -67,7 +69,7 @@ const game = () => {
 
         if (gameEnded === true) return
 
-        const result = evaluate(gameStatus)
+        const result = evaluate(gameStatus, gameEnded)
         
         switch (result) {
             case 1:

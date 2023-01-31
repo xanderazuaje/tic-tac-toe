@@ -12,7 +12,8 @@
 
 export {evaluate}
 
-const evaluate = (boardStatus)=>{
+const evaluate = (boardStatus, gameEnded)=>{
+    gameEnded = gameEnded
     console.time()
     const rowEvaluation = [[],[]]
     const columnEvaluation = [[],[]]
