@@ -14,7 +14,6 @@ export {evaluate}
 
 const evaluate = (boardStatus, gameEnded)=>{
     gameEnded = gameEnded
-    console.time()
     const rowEvaluation = [[],[]]
     const columnEvaluation = [[],[]]
     const diagonalsEvaluation = [[],[]]
@@ -102,7 +101,69 @@ const evaluate = (boardStatus, gameEnded)=>{
         undefined
     }
     
-    console.timeEnd()
     return checkWinner()
     
 }
+
+const getPossiblePlays = (actualPosition, turn)=>{
+    //Array of objects of possible plays
+    let possiblePlays = []
+    let possiblePlaysCount = 0
+    
+    let nextPosition = []
+
+    //iterates on each possible movement
+    for (let i = 0; i < actualPosition.length; i++) {
+        for (let j = 0; j < actualPosition[i].length; j++) {
+            if (actualPosition[i][j] === null){
+                //creates a new blank coordinate to be modified next
+                possiblePlays.push({x:0,y:0})
+                
+                //returns coordinates of the play
+                possiblePlays[possiblePlaysCount].x = i
+                possiblePlays[possiblePlaysCount].y = j
+                
+                nextPosition.push({index: possiblePlaysCount, board: JSON.parse(JSON.stringify(actualPosition))})
+                nextPosition[possiblePlaysCount].board[i][j] = turn
+                
+                possiblePlaysCount++
+            }
+        }
+    }
+    
+    return {nextPosition, possiblePlays}
+}
+
+let sampleBoard = [ 
+    [null,'X','O'],
+    ['X',null,null],
+    ['X',null, null]
+    ]
+
+
+const minimax = (actualPosition, isComputerturn, parent)=>{
+    const turn = isComputerturn ? 'X' : 'O' 
+    
+    const possiblePlays = getPossiblePlays(actualPosition, turn)
+    
+    if (possiblePlays.possiblePlays.length === 0) {
+        return evaluate(actualPosition)
+    }
+
+    if (isComputerturn) {
+        let maxValue = -Infinity
+        possiblePlays.nextPosition.forEach(each =>{
+                maxValue = Math.max(maxValue, minimax(each.board, false))
+                return maxValue
+            })
+            
+    } else {
+        let minValue = Infinity
+        possiblePlays.nextPosition.forEach(each => {
+            minValue = Math.min(minValue, minimax(each.board, true))
+            return minValue
+        })
+    }
+}
+
+console.log(minimax(sampleBoard, true))
